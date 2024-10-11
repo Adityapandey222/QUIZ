@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+        }
+        .student-photo {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .comments {
+            margin: 20px 0;
+        }
+        .signature {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Student Report Card</h1>
+        <img src="[Student Photo URL]" alt="Student Photo" class="student-photo">
+    </header>
+
+    <section>
+        <h2>Student Information</h2>
+        <p><strong>Name:</strong> [Student Name]</p>
+        <p><strong>Class:</strong> [Grade/Class]</p>
+        <p><strong>Student ID:</strong> [Student ID]</p>
+    </section>
+
+    <section>
+        <h2>Subject-wise Performance</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                    <th>Marks (Out of 100)</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>English</td>
+                    <td>[English Teacher]</td>
+                    <td>[English Marks]</td>
+                    <td>[English Grade]</td>
+                </tr>
+                <tr>
+                    <td>Mathematics</td>
+                    <td>[Math Teacher]</td>
+                    <td>[Math Marks]</td>
+                    <td>[Math Grade]</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </section>
+
+    <section class="comments">
+        <h2>Teacher's Comments</h2>
+        <p>[Teacher's comments on the student's performance]</p>
+        <p><strong>Date:</strong> [Date]</p>
+    </section>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quizify app</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%), url('https://t4.ftcdn.net/jpg/03/09/44/57/360_F_309445752_htXY7HAUYQsx8mD8zhmHgdtgaxyUUSx2.jpg');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+
+    .app {
+        position: relative;
+        background: #fff;
+        width: 90%;
+        max-width: 600px;
+        margin: 100px auto 0;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .app h1 {
+        font-size: 25px;
+        color: #001e4d;
+        font-weight: 600;
+        border-bottom: 1px solid #333;
+        padding-bottom: 30px;
+    }
+
+    .quiz {
+        padding: 20px 0;
+    }
+
+    .quiz h2 {
+        font-size: 18px;
+        color: #001e4d;
+        font-weight: 600;
+    }
+
+    .btn {
+        background: #fff;
+        color: #222;
+        font-weight: 500;
+        width: 100%;
+        border: 1px solid #222;
+        padding: 10px;
+        margin: 10px 0;
+        text-align: left;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn:hover:not([disabled]) {
+        background: #222;
+        color: #fff;
+    }
+
+    .btn:disabled {
+        cursor: no-drop;
+    }
+
+    #next-btn {
+        background: #001e4d;
+        color: #fff;
+        font-weight: 500;
+        width: 150px;
+        border: 0;
+        padding: 10px;
+        margin: 20px auto 0;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+    }
+
+    #notification-container button {
+        background: #001e4d;
+        color: #fff;
+        font-weight: 500;
+        padding: 10px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    #notification-container button:hover {
+        background: #fff;
+        color: #001e4d;
+    }
+
+    .correct {
+        background: #9aeabc;
+    }
+
+    .incorrect {
+        background: #ff9393;
+    }
+
+    #timer {
+        position: absolute;
+        top: 70px;
+        right: 30px;;
+        color: #e74c3c;
+        font-weight: bold;
+    }
+</style>
+<body>
+    <div class="app">
+        <h1>General Knowledge</h1>
+        <div class="quiz"></div>
+        <h2 id="question"> Question goes here</h2>
+        <div id="answer-buttons"></div>
+        <div id="timer">Time Remaining:<span id="countdown">20</span>seconds</div>
+        <button id="next-btn">Next</button>
+        <div id="notification-container">
+            <p id="notification-message"></p>
+            <button onclick="closeNotification()">Close</button>
+            <button onclick="addNewQuiz()">Add New Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: 'Who is the president of the USA?',
+                answers: [
+                    { text: 'A. John Doe', correct: false },
+                    { text: 'B. Jane Doe', correct: false },
+                    { text: 'C. Joe Biden', correct: true }
+                ]
+            },
+            {
+                question: 'What is the capital of Japan?',
+                answers: [
+                    { text: 'A. Tokyo', correct: true },
+                    { text: 'B. Beijing', correct: false },
+                    { text: 'C. Seoul', correct: false }
+                ]
+            },
+            {
+                question: 'Who wrote "Romeo and Juliet"?',
+                answers: [
+                    { text: 'A. Charles Dickens', correct: false },
+                    { text: 'B. William Shakespeare', correct: true },
+                    { text: 'C. Jane Austen', correct: false }
+                ]
+            },
+            {
+                question: 'What is the largest mammal?',
+                answers: [
+                    { text: 'A. Elephant', correct: false },
+                    { text: 'B. Blue Whale', correct: true },
+                    { text: 'C. Giraffe', correct: false }
+                ]
+            },
+            {
+                question: 'In which year did World War II end?',
+                answers: [
+                    { text: 'A. 1943', correct: false },
+                    { text: 'B. 1945', correct: true },
+                    { text: 'C. 1950', correct: false }
+                ]
+            }
+        ];
+
+        const questionElement = document.getElementById("question");
+        const answerButtons = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-btn");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let countdownElement = document.getElementById('countdown');
+        let seconds = 20;
+        let timer;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerHTML = "Next";
+            showQuestion();
+            startTimer();
+        }
+
+        function showQuestion() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            let questionNo = currentQuestionIndex + 1;
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("btn");
+                answerButtons.appendChild(button);
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener("click", selectAnswer);
+            });
+        }
+
+        function resetState() {
+            nextButton.style.display = "none";
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === "true";
+            if (isCorrect) {
+                selectedBtn.classList.add("correct");
+                score++;
+            } else {
+                selectedBtn.classList.add("incorrect");
+            }
+            Array.from(answerButtons.children).forEach(button => {
+                if (button.dataset.correct === "true") {
+                    button.classList.add("correct");
+                }
+                nextButton.style.display = "block";
+            });
+            clearInterval(timer);
+        }
+
+        function showScore() {
+            resetState();
+            questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+            nextButton.innerHTML = "Play Again";
+            nextButton.style.display = "block";
+        }
+
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+                startTimer();
+            } else {
+                showScore();
+                resetTimer();
+            }
+        }
+
+        nextButton.addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length) {
+                handleNextButton();
+            } else {
+                startQuiz();
+            }
+        });
+
+        function startTimer() {
+            seconds = 20;
+            countdownElement.textContent = seconds;
+            timer = setInterval(function () {
+                seconds--;
+                countdownElement.textContent = seconds;
+
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    alert('Time is up!');
+                    handleNextButton();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+        }
+
+        function showNotification(message) {
+            var notificationContainer = document.getElementById('notification-container');
+            var notificationMessage = document.getElementById('notification-message');
+
+            notificationMessage.textContent = message;
+            notificationContainer.style.display = 'block';
+
+            setTimeout(function () {
+                closeNotification();
+            }, 5000);
+        }
+
+        function closeNotification() {
+            var notificationContainer = document.getElementById('notification-container');
+            notificationContainer.style.display = 'none';
+        }
+
+        function addNewQuiz() {
+            showNotification('New quiz added! Check it out now.');
+        }
+
+        startQuiz();
+    </script>
+</body>
+</html>

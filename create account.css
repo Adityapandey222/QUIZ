@@ -1,0 +1,39 @@
+* Adjust the margin as needed */
+/* Add this to your create account.css file */
+
+.form {
+    margin-top: 0px; /* Add some space between the heading and the form */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px; /* Adjust the maximum width as needed */
+    margin: auto; /* Center the form horizontally */
+}
+
+label {
+    margin-bottom: 0px; /* Add space between labels and input fields */
+}
+
+input {
+    margin-bottom: 0px; /* Add space between input fields */
+}
+
+.btnn {
+    margin-top: 10px; /* Add space between the password field and the Sign Up button */
+}
+
+body {
+    background-image: url('front page.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.main {
+    /* You may need to adjust other styles in .main to make it visible on top of the background image */
+    position: relative;
+    z-index: 1;
+}

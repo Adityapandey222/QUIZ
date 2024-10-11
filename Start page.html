@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%), url('https://t4.ftcdn.net/jpg/03/09/44/57/360_F_309445752_htXY7HAUYQsx8mD8zhmHgdtgaxyUUSx2.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    
+        button, select {
+            font-size: 16px;
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    
+        #categorySelectionContainer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            color: #fff;
+            font-size: 18px;
+        }
+        /* New styles for button container */
+        #buttonContainer {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttonContainer">
+        <button id="startQuizButton">Start Quiz</button>
+        <select id="selectSubjectDropdown">
+            <option value="" disabled selected>Select Subject</option>
+            <option value="GK">General Knowledge</option>
+            <option value="English">English</option>
+            <option value="Sports">Sports</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="CurrentAffairs">Current Affairs</option>
+            <option value="Films">Films</option>
+            <option value="Music">Music</option>
+        </select>
+        <button id="resultButton">Result</button>
+        <button id="feedbackButton">Feedback</button>
+    </div>
+ 
+</body>
+<script>
+     // Your corrected JavaScript code
+     document.getElementById('startQuizButton').addEventListener('click', function() {
+        window.location.href = 'Start Quiz.html';
+    });
+
+    document.getElementById('selectSubjectDropdown').addEventListener('change', function() {
+        var selectedSubject = this.value;
+        if (selectedSubject) {
+            alert('Selected Subject: ' + selectedSubject);
+        }
+    });
+
+    document.getElementById('resultButton').addEventListener('click', function() {
+        window.location.href = 'path/to/result.html';
+    });
+
+    document.getElementById('feedbackButton').addEventListener('click', function() {
+        window.location.href = 'feedback.html';
+    });
+</script>
+</html>

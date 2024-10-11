@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%), url('https://t4.ftcdn.net/jpg/03/09/44/57/360_F_309445752_htXY7HAUYQsx8mD8zhmHgdtgaxyUUSx2.jpg');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    
+        button, select {
+            font-size: 16px;
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    
+        #categorySelectionContainer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            color: #fff;
+            font-size: 18px;
+        }
+        /* New styles for button container */
+        #buttonContainer {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div id="buttonContainer">
+        <button id="startQuizButton">Start Quiz</button>
+        <select id="selectSubjectDropdown">
+            <option value="" disabled selected>Select Subject</option>
+            <option value="GK">General Knowledge</option>
+            <option value="English">English</option>
+            <option value="Sports">Sports</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="CurrentAffairs">Current Affairs</option>
+            <option value="Films">Films</option>
+            <option value="Music">Music</option>
+        </select>
+        <button id="resultButton">Result</button>
+        <button id="feedbackButton">Feedback</button>
+    </div>
+    
+    <div id="categorySelectionContainer">
+        <label for="category">Select Category:</label>
+        <select id="category">
+            <!-- Options for General Knowledge (GK) questions -->
+            <option value="GK">General Knowledge</option>
+            <option value="English">English</option>
+            <option value="Sports">Sports</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+            <option value="CurrentAffairs">Current Affairs</option>
+            <option value="Films">Films</option>
+            <option value="Music">Music</option>
+        </select>
+    </div>
+
+    <div id="quizContainer" style="display: none;">
+        <!-- Container to display quiz questions -->
+    </div>
+ 
+</body>
+<script>
+    const categories = {
+        'GK': [
+            { question: 'Who is the president of the USA?', options: ['A. John Doe', 'B. Jane Doe', 'C. Joe Biden'], answer: 'C' },
+            { question: 'What is the capital of Japan?', options: ['A. Tokyo', 'B. Beijing', 'C. Seoul'], answer: 'A' },
+            { question: 'Who wrote "Romeo and Juliet"?', options: ['A. Charles Dickens', 'B. William Shakespeare', 'C. Jane Austen'], answer: 'B' },
+            { question: 'What is the largest mammal?', options: ['A. Elephant', 'B. Blue Whale', 'C. Giraffe'], answer: 'B' },
+            { question: 'In which year did World War II end?', options: ['A. 1943', 'B. 1945', 'C. 1950'], answer: 'B' },
+        ],
+        // Add more categories as needed
+    };
+
+    document.getElementById('startQuizButton').addEventListener('click', function() {
+        var selectedSubject = document.getElementById('selectSubjectDropdown').value;
+        var quizContainer = document.getElementById('quizContainer');
+
+        if (selectedSubject && categories[selectedSubject]) {
+            // Clear previous quiz questions
+            quizContainer.innerHTML = '';
+
+            // Display questions for the selected subject
+            categories[selectedSubject].forEach((questionData, index) => {
+                var questionElement = document.createElement('div');
+                questionElement.innerHTML = `<p>${index + 1}. ${questionData.question}</p>`;
+                
+                // Add options
+                questionData.options.forEach((option) => {
+                    var optionElement = document.createElement('p');
+                    optionElement.innerHTML = option;
+                    questionElement.appendChild(optionElement);
+                });
+
+                quizContainer.appendChild(questionElement);
+            });
+
+            // Show the quiz container
+            quizContainer.style.display = 'block';
+
+            alert(`Starting ${selectedSubject} quiz!`);
+        } else {
+            alert('Please select a valid subject.');
+        }
+    });
+
+    document.getElementById('selectSubjectDropdown').addEventListener('change', function() {
+        var selectedSubject = this.value;
+        var categorySelectionContainer = document.getElementById('categorySelectionContainer');
+        var quizContainer = document.getElementById('quizContainer');
+
+        if (selectedSubject && categories[selectedSubject]) {
+            alert(`Selected Subject: ${selectedSubject}`);
+            // Add your functionality here based on the selected subject
+            // For now, I'm just displaying an alert with the selected subject
+
+            // If the selected subject has questions, you can display them or perform other actions
+
+            // Hide quiz container initially
+            quizContainer.style.display = 'none';
+        } else {
+            categorySelectionContainer.style.display = 'none';
+            quizContainer.style.display = 'none';
+            alert('Please select a valid subject.');
+        }
+    });
+
+    document.getElementById('resultButton').addEventListener('click', function() {
+        window.location.href = 'path/to/result.html';
+    });
+
+    document.getElementById('feedbackButton').addEventListener('click', function() {
+        window.location.href = 'feedback.html';
+    });
+</script>
+</html>

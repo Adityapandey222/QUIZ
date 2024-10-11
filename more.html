@@ -1,0 +1,109 @@
+const quizData = [
+    {
+        category: 'General Knowledge',
+        questions: [
+            {
+                question: 'Who is the president of the USA?',
+                options: ['A. John Doe', 'B. Jane Doe', 'C. Joe Biden'],
+                answer: 'C'
+            },
+            // Add more questions for the 'General Knowledge' category as needed
+        ]
+    },
+    {
+        category: 'English',
+        questions: [
+            {
+                question: 'Who wrote "To Kill a Mockingbird"?',
+                options: ['A. J.K. Rowling', 'B. Harper Lee', 'C. George Orwell'],
+                answer: 'B'
+            },
+            // Add more questions for the 'English' category as needed
+        ]
+    },
+    // Repeat the structure for other categories (Sports, Science, History, Geography, CurrentAffairs, Films, Music, etc.)
+];
+
+const questionDuration = 10;
+let currentCategory;
+let currentQuestionIndex;
+let timer;
+let score = 0;
+
+function startQuiz() {
+    currentCategory = document.getElementById('category').value;
+    currentQuestionIndex = 0;
+    score = 0;
+
+    document.getElementById('category-selection').style.display = 'none';
+    document.getElementById('quiz-container').style.display = 'block';
+
+    loadQuestion();
+    startTimer();
+}
+
+function loadQuestion() {
+    const questionElement = document.getElementById('question');
+    const optionsElement = document.getElementById('options');
+
+    const currentQuestion = quizData.find(category => category.category === currentCategory).questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+
+    optionsElement.innerHTML = '';
+
+    currentQuestion.options.forEach((option, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = option;
+        optionButton.onclick = () => selectOption(option, index);
+        optionsElement.appendChild(optionButton);
+    });
+}
+
+function startTimer() {
+    let timeRemaining = questionDuration;
+
+    document.getElementById('timer').textContent = `Time: ${timeRemaining}s`;
+
+    timer = setInterval(() => {
+        timeRemaining--;
+
+        document.getElementById('timer').textContent = `Time: ${timeRemaining}s`;
+
+        if (timeRemaining < 0) {
+            clearInterval(timer);
+            selectOption('', -1); // No option selected, treat as timeout
+        }
+    }, 1000);
+}
+
+function selectOption(selectedOption, optionIndex) {
+    clearInterval(timer);
+
+    const currentQuestion = quizData.find(category => category.category === currentCategory).questions[currentQuestionIndex];
+    const isCorrect = selectedOption.includes(currentQuestion.answer);
+
+    if (isCorrect) {
+        score++;
+    }
+
+    // Highlight the selected option
+    document.querySelectorAll('#options button').forEach((button, index) => {
+        button.style.backgroundColor = index === optionIndex ? (isCorrect ? '#2ecc71' : '#e74c3c') : '';
+    });
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < quizData.find(category => category.category === currentCategory).questions.length) {
+        setTimeout(() => {
+            loadQuestion();
+            startTimer();
+        }, 1000); // Delay before loading the next question for a better user experience
+    } else {
+        endQuiz();
+    }
+}
+
+function endQuiz() {
+    clearInterval(timer);
+    alert(`Quiz completed!\nYour Score: ${score} out of ${quizData.find(category => category.category === currentCategory).questions.length}`);
+}

@@ -1,0 +1,37 @@
+/* Add these styles to your existing CSS file */
+
+.contact-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form label {
+    margin-bottom: 8px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.contact-form button {
+    padding: 10px;
+}
+/* Add these styles to set the background image for the whole page */
+
+body {
+    background-image: url('front page.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.main {
+    /* You may need to adjust other styles in .main to make it visible on top of the background image */
+    position: relative;
+    z-index: 1;
+}
+
+/* Rest of your existing styles */
